@@ -76,3 +76,4 @@ print(f"The equation of the line is: y = {slope_k}x + {constant_m}")
 
 #The Euclideam distance between the points P1 and P2 is the length of a line between them. 
 #Let  and  and compute the distance between them.
+
