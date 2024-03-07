@@ -6,11 +6,11 @@ from inspect import currentframe
 # in jupyter notebook
 # DATA/PATH = "../../data/data_processing/"
 DATA_PATH = Path(__file__).parents[2] /"data"/"data_processing"/"python"
-# data\data_processing\python\co2_annmean_mlo.csv
+STYLES_PATH = Path(__file__).parent / "styles"
 
 class StoryCharts:
     def __init__(self) -> None:
-        pass
+        plt.style.use(STYLES_PATH / "base.mplstyle")
 
     def _set_labels(self, title, xlabel, ylabel):
         self.ax.set_xlabel(xlabel, loc="left")
@@ -52,11 +52,10 @@ if __name__ == "__main__":
     print(df.head())
 
     sc = StoryCharts()
-    #sc._plot(2,3, xlabel="x label", ylabel="y label", title = "our title")
     sc.Line(
         df["year"],
         df["mean"],
         xlabel = "YEAR FROM 1959",
         ylabel = "CO$_2$ MOLE FRACTION IN PPM",
-        title = "The annual mean of CO$_2$ emissions measured in Mauna Loa has increased every year since 1959"
+        title = "The annual mean of CO$_2$ emissions measured in\nMauna Loa has increased every year since 1959"
     )
