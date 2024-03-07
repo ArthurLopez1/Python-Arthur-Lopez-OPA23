@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from pathlib import Path
 import pandas as pd
+from inspect import currentframe
 
 # in jupyter notebook
 # DATA/PATH = "../../data/data_processing/"
@@ -10,13 +11,31 @@ DATA_PATH = Path(__file__).parents[2] /"data"/"data_processing"/"python"
 class StoryCharts:
     def __init__(self) -> None:
         pass
+
+    def _set_labels(self, title, xlabel, ylabel):
+        self.ax.set_xlabel(xlabel, loc="left")
+        self.ax.set_ylabel(ylabel, loc="top")
+        self.ax.set_title(title, loc="left", pad=15)
     
     def _plot(self, x, y, colors = "#0c4a6e", **label_kwargs):
         self.fig, self.ax = plt.subplots()
 
+        calling_method_main = currentframe().f_back.f_code.co_name
+        if calling_method_main == "Line":
+            self.ax.plot(x,y, color = colors)
+        elif calling_method_main == "Bar":
+            self.ax.bar(x,y, color = colors)
+
+
+        self._set_labels(**label_kwargs)
+        self.fig.tight_layout()
         plt.show()
 
-    def Line(self, x, y):
+    def Line(self, x, y, colors = "#0c4a6e", **label_kwargs):
+        self._plot(x,y, colors, **label_kwargs)
+        pass
+
+    def Bar(self, x, y):
         pass
 
 # this is to be able this as a standalone script
@@ -33,4 +52,11 @@ if __name__ == "__main__":
     print(df.head())
 
     sc = StoryCharts()
-    sc._plot(2,3)
+    #sc._plot(2,3, xlabel="x label", ylabel="y label", title = "our title")
+    sc.Line(
+        df["year"],
+        df["mean"],
+        xlabel = "YEAR FROM 1959",
+        ylabel = "CO$_2$ MOLE FRACTION IN PPM",
+        title = "The annual mean of CO$_2$ emissions measured in Mauna Loa has increased every year since 1959"
+    )
